@@ -1,0 +1,62 @@
+#pragma once
+
+#include "tables.h"
+#include "chtypes.h"
+
+namespace cheng4
+{
+
+// singleton
+class Magic
+{
+protected:
+	static u32 initMagicPtrs( Square sq, bool bishop );
+	// rook/bishop relevant occupancy masks
+	static Bitboard rookRelOcc[64];
+	static Bitboard bishopRelOcc[64];
+	// rook/bishop magic shr
+	static u8 rookShr[64];
+	static u8 bishopShr[64];
+	// rook/bishop magic pointers
+	static const Bitboard *rookPtr[64];
+	static const Bitboard *bishopPtr[64];
+	// rook/bishop magic multipliers
+	static const Bitboard rookMagic[64];
+	static const Bitboard bishopMagic[64];
+public:
+	static void init();
+	static void done();
+
+	// occ: block mask
+	static inline Bitboard rookAttm( Square sq, Bitboard occ )
+	{
+		return rookPtr[ sq ][ (rookMagic[ sq ] * (occ & rookRelOcc[ sq ])) >> rookShr[ sq ] ];
+	}
+
+	// occ: block mask
+	static inline Bitboard bishopAttm( Square sq, Bitboard occ )
+	{
+		return bishopPtr[ sq ][ (bishopMagic[ sq ] * (occ & bishopRelOcc[ sq ])) >> bishopShr[ sq ] ];
+	}
+
+	// occ: block mask
+	static inline Bitboard queenAttm( Square sq, Bitboard occ )
+	{
+		return rookAttm( sq, occ ) | bishopAttm( sq, occ );
+	}
+
+	template< Piece pt > static inline Bitboard sliderAttm( Square sq, Bitboard occ )
+	{
+		assert( isSlider( pt ) );
+		if ( pt == ptBishop )
+			return bishopAttm( sq, occ );
+		else if ( pt == ptRook )
+			return rookAttm( sq, occ );
+		else if ( pt == ptQueen )
+			return queenAttm( sq, occ );
+		else return 0;
+	}
+
+};
+
+}

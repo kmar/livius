@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/livius">
+        <file>resources/livius.png</file>
+    </qresource>
+</RCC>

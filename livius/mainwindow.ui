@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>613</width>
+    <height>487</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Livius</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="livius.qrc">
+    <normaloff>:/livius/resources/livius.png</normaloff>:/livius/resources/livius.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QMdiArea" name="mdiArea">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>-1</y>
+      <width>853</width>
+      <height>682</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>613</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionConnect"/>
+    <addaction name="actionPGN"/>
+    <addaction name="actionSave_config"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuAppearance">
+    <property name="title">
+     <string>Appearance</string>
+    </property>
+    <widget class="QMenu" name="menuColor_theme">
+     <property name="title">
+      <string>Color theme</string>
+     </property>
+     <addaction name="actionBrown"/>
+     <addaction name="actionBlue_1"/>
+     <addaction name="actionBlue_2"/>
+     <addaction name="actionGreen"/>
+     <addaction name="separator"/>
+     <addaction name="actionTLCV"/>
+     <addaction name="actionFritz_blue"/>
+     <addaction name="actionShredder"/>
+     <addaction name="actionArena"/>
+     <addaction name="actionWinboard"/>
+     <addaction name="actionChess_Partner"/>
+     <addaction name="actionChess_King"/>
+    </widget>
+    <addaction name="menuColor_theme"/>
+    <addaction name="actionBoard_light_squares"/>
+    <addaction name="actionBoard_dark_squares"/>
+    <addaction name="actionBoard_border"/>
+    <addaction name="actionBoard_highlight"/>
+    <addaction name="separator"/>
+    <addaction name="actionPiece_set"/>
+    <addaction name="separator"/>
+    <addaction name="actionFonts"/>
+   </widget>
+   <widget class="QMenu" name="menuTournament">
+    <property name="title">
+     <string>Tournament</string>
+    </property>
+    <addaction name="actionResults"/>
+    <addaction name="actionE_mail_game"/>
+   </widget>
+   <widget class="QMenu" name="menuBoard">
+    <property name="title">
+     <string>Board</string>
+    </property>
+    <addaction name="actionFlipBoard"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuDebug">
+    <property name="title">
+     <string>Debug</string>
+    </property>
+    <addaction name="actionShowDebugConsole"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuAppearance"/>
+   <addaction name="menuBoard"/>
+   <addaction name="menuTournament"/>
+   <addaction name="menuDebug"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionBoard_light_squares">
+   <property name="text">
+    <string>Board light squares</string>
+   </property>
+  </action>
+  <action name="actionBoard_dark_squares">
+   <property name="text">
+    <string>Board dark squares</string>
+   </property>
+  </action>
+  <action name="actionPiece_set">
+   <property name="text">
+    <string>Piece set</string>
+   </property>
+  </action>
+  <action name="actionBoard_border">
+   <property name="text">
+    <string>Board border</string>
+   </property>
+  </action>
+  <action name="actionBoard_highlight">
+   <property name="text">
+    <string>Board highlight</string>
+   </property>
+  </action>
+  <action name="actionResults">
+   <property name="text">
+    <string>Results</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionE_mail_game">
+   <property name="text">
+    <string>E-mail game</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionBrown">
+   <property name="text">
+    <string>Brown</string>
+   </property>
+  </action>
+  <action name="actionBlue_1">
+   <property name="text">
+    <string>Blue 1</string>
+   </property>
+  </action>
+  <action name="actionBlue_2">
+   <property name="text">
+    <string>Blue 2</string>
+   </property>
+  </action>
+  <action name="actionGreen">
+   <property name="text">
+    <string>Green</string>
+   </property>
+  </action>
+  <action name="actionTLCV">
+   <property name="text">
+    <string>TLCV</string>
+   </property>
+  </action>
+  <action name="actionFritz_blue">
+   <property name="text">
+    <string>Fritz blue</string>
+   </property>
+  </action>
+  <action name="actionShredder">
+   <property name="text">
+    <string>Shredder</string>
+   </property>
+  </action>
+  <action name="actionArena">
+   <property name="text">
+    <string>Arena</string>
+   </property>
+  </action>
+  <action name="actionWinboard">
+   <property name="text">
+    <string>Winboard</string>
+   </property>
+  </action>
+  <action name="actionChess_Partner">
+   <property name="text">
+    <string>Chess Partner</string>
+   </property>
+  </action>
+  <action name="actionChess_King">
+   <property name="text">
+    <string>Chess King</string>
+   </property>
+  </action>
+  <action name="actionSave_config">
+   <property name="text">
+    <string>Save config</string>
+   </property>
+  </action>
+  <action name="actionPGN">
+   <property name="text">
+    <string>PGN</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionFonts">
+   <property name="text">
+    <string>Fonts</string>
+   </property>
+  </action>
+  <action name="actionFlipBoard">
+   <property name="text">
+    <string>Flip</string>
+   </property>
+   <property name="toolTip">
+    <string>Flip board</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionShowDebugConsole">
+   <property name="text">
+    <string>Show console</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="livius.qrc"/>
+ </resources>
+ <connections/>
+</ui>
