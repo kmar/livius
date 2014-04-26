@@ -1,4 +1,3 @@
-/*
 livius - a TLCV-compatible live chess viewer
 
 Copyright (c) 2014 Martin Sedlak (mar)
@@ -21,26 +20,3 @@ freely, subject to the following restrictions:
 
    3. This notice may not be removed or altered from any source
    distribution.
-*/
-
-#include "pgndialog.h"
-#include "ui_pgndialog.h"
-#include "pgn/pgnhighlight.h"
-
-PGNDialog::PGNDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::PGNDialog)
-{
-	ui->setupUi(this);
-	new PGNHighlighter( ui->pgnEdit->document() );
-}
-
-PGNDialog::~PGNDialog()
-{
-	delete ui;
-}
-
-void PGNDialog::setPGN( const QString &pgn )
-{
-	ui->pgnEdit->setText( pgn );
-}
