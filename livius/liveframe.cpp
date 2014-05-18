@@ -27,9 +27,9 @@ freely, subject to the following restrictions:
 #include "liveinfo.h"
 #include "chatinfo.h"
 #include "chessboard.h"
-#include "tlcvclient.h"
 #include "config/token.h"
 #include "config/config.h"
+#include "tlcvclient.h"
 #include <QSplitter>
 #include <QClipboard>
 #include <QApplication>
@@ -102,6 +102,13 @@ LiveFrame::~LiveFrame()
 	delete client;
 }
 
+void LiveFrame::setRunning( bool flag )
+{
+	running = flag;
+	if ( !flag )
+		bufferedMoves.clear();
+}
+
 // get menu map
 const LiveFrame::MenuMap &LiveFrame::getMenu() const
 {
@@ -120,9 +127,6 @@ QString LiveFrame::getPGN() const
 
 void LiveFrame::sendMessage( const QString &msg )
 {
-/*	if ( msg == "$$SEC" )			// better no back doors :)
-		client->send("SECURITY");
-	else*/
 	client->chat(msg);
 }
 
@@ -259,7 +263,19 @@ void LiveFrame::parseLevel( const char *c )
 	current.timeControl = tc;
 }
 
-void LiveFrame::parseMove( int color, const char * c )
+// clears buffered moves with older acks (we got a valid move)
+void LiveFrame::clearBufferedMoves( AckType ack )
+{
+	std::map<AckType, MoveInfo>::iterator it, itn;
+	for ( it = bufferedMoves.begin(); it != bufferedMoves.end(); it = itn ) {
+		itn = it;
+		itn++;
+		if ( it->first < ack )
+			bufferedMoves.erase(it);
+	}
+}
+
+bool LiveFrame::parseMove( int color, AckType ack, const char *c, bool nobuffer )
 {
 	if ( !running )
 	{
@@ -267,7 +283,7 @@ void LiveFrame::parseMove( int color, const char * c )
 		warn.sprintf("Warning: got %cmove: %s but game is not running",
 			color == cheng4::ctWhite ? 'w' : 'b', c);
 		chat->addMsg(warn);
-		return;
+		return 0;
 	}
 	cheng4::Board b = board->getBoard();
 	TLCVClient::skipSpc( c );
@@ -288,6 +304,7 @@ void LiveFrame::parseMove( int color, const char * c )
 	cheng4::Move move = b.fromSAN(c);
 	if ( move != cheng4::mcNone )
 	{
+		clearBufferedMoves( ack );
 		board->setMoveNumber((cheng4::uint)mnum);
 		board->setHighlight(move);
 
@@ -306,23 +323,41 @@ void LiveFrame::parseMove( int color, const char * c )
 		info->setFEN( board->getFEN() );
 		info->setTurn( board->getTurn() );
 		sigPGNChanged( getPGN() );
+		return 1;
 	}
-	else
+	if ( nobuffer )
+		return 0;
+	// we're out of luck here!!!
+	MoveInfo mi;
+	mi.color = color;
+	mi.str = QString::fromUtf8(c);
+	bufferedMoves[ack] = mi;
+
+	// ok so we have a buffered move(s) now, time to try to make them!
+	std::map< AckType, MoveInfo >::const_iterator ci;
+	for ( ci = bufferedMoves.begin(); ci != bufferedMoves.end(); )
 	{
-		// we're out of luck here!!!
-		QString err;
-		err.sprintf("Got illegal %cmove: %s, FEN = %s", color == cheng4::ctWhite ? 'w' : 'b',
-			c, b.toFEN().c_str());
-		chat->addErr(err);
-		chat->addErr("Resetting game (probably out of order datagram)");
-		running = 0;
-		addCurrent();
+		const MoveInfo &mvi = ci->second;
+		QByteArray arr = mvi.str.toUtf8();
+		if (parseMove( mvi.color, ci->first, arr.constData(), 1))
+		{
+			// parsed successfully
+			ci = bufferedMoves.begin();
+			continue;
+		}
+		ci++;
 	}
+	// FIXME: this is debug code now so that I know the fix works
+	QString err;
+	err.sprintf("Got illegal %cmove: %s, FEN = %s", color == cheng4::ctWhite ? 'w' : 'b',
+		c, b.toFEN().c_str());
+	chat->addMsg(err);
+	return 0;
 }
 
 void LiveFrame::connectionError( int err )
 {
-	running = 0;
+	setRunning(0);
 	addCurrent();
 	switch( err )
 	{
@@ -402,8 +437,9 @@ bool LiveFrame::parseMenu( const char * c )
 	return 1;
 }
 
-void LiveFrame::parseCommand( int cmd, const char *c )
+void LiveFrame::parseCommand( int cmd, AckType ack, const char *c )
 {
+	(void)ack;
 	QString str;
 	switch( cmd )
 	{
@@ -457,7 +493,7 @@ void LiveFrame::parseCommand( int cmd, const char *c )
 			current.board = board->getBoard();
 			current.moves.clear();
 			current.result.clear();
-			running = 1;
+			setRunning(1);
 		}
 		info->setFEN(str.trimmed());
 		break;
@@ -470,13 +506,6 @@ void LiveFrame::parseCommand( int cmd, const char *c )
 		chat->addMsg(str.trimmed());
 		break;
 	case TLCVClient::CMD_WPLAYER:
-		// new: we have to force a new game to start!
-		if ( running )
-		{
-			// add current game
-			addCurrent();
-			running = 0;
-		}
 		str = c;
 		info->setPlayer( cheng4::ctWhite, str.trimmed() );
 		current.white = str.trimmed();
@@ -502,10 +531,10 @@ void LiveFrame::parseCommand( int cmd, const char *c )
 		parseLevel( c );
 		break;
 	case TLCVClient::CMD_WMOVE:
-		parseMove( cheng4::ctWhite, c );
+		parseMove( cheng4::ctWhite, ack, c );
 		break;
 	case TLCVClient::CMD_BMOVE:
-		parseMove( cheng4::ctBlack, c );
+		parseMove( cheng4::ctBlack, ack, c );
 		break;
 	case TLCVClient::CMD_SECUSER:
 		str = c;
@@ -515,7 +544,7 @@ void LiveFrame::parseCommand( int cmd, const char *c )
 		// finish result
 		str = c;
 		current.result = str.trimmed();
-		running = 0;
+		setRunning(0);
 		// notify in chat window
 		str = info->getPlayer(cheng4::ctWhite);
 		str += " - ";
@@ -603,7 +632,7 @@ void LiveFrame::reconnect()
 	client->disconnect();
 	menu.clear();
 	sigMenuChanged( this, menu );	
-	running = 0;
+	setRunning(0);
 	addCurrent(1);
 	client->reconnect();
 }

@@ -216,7 +216,7 @@ void TLCVClient::skipNonSpc( const char *&c )
 		c++;
 }
 
-void TLCVClient::gotACK( quint32 id )
+void TLCVClient::gotACK( AckType id )
 {
 	// remove from resend queue
 	std::deque< ReliableMessage >::iterator it;
@@ -261,13 +261,13 @@ void TLCVClient::receive( const QByteArray &arr )
 	updateBufferedCommands( receiveStamp );
 	const char *c = arr.constData();
 	skipSpc(c);
-	quint32 curId = 0;
+	AckType curId = 0;
 	if ( *c == '<')
 	{
 		c++;
 		skipSpc(c);
 		// parse number
-		quint32 id = (quint32)strtoul(c, const_cast<char **>(&c) , 10);
+		AckType id = (AckType)strtoul(c, const_cast<char **>(&c) , 10);
 		curId = id;
 
 		if ( lastAcked.find(id) != lastAcked.end() )
@@ -295,7 +295,7 @@ void TLCVClient::receive( const QByteArray &arr )
 		{
 			logOn = 1;
 			connecting = 0;
-			sigCommand( CMD_LOGON, c );
+			sigCommand( CMD_LOGON, curId, c );
 		}
 		return;
 	}
@@ -305,7 +305,7 @@ void TLCVClient::receive( const QByteArray &arr )
 		// parse number
 		unsigned long id = strtoul(c, const_cast<char **>(&c) , 10);
 		// we got ACK for this id => remove from queue
-		gotACK((quint32)id);
+		gotACK((AckType)id);
 		return;
 	}
 	if ( startsWith(c, "PONG") )
@@ -341,38 +341,38 @@ void TLCVClient::receive( const QByteArray &arr )
 	{
 		// we don't want to buffer chat as we want more responsive chat
 		skipSpc(c);
-		sigCommand( CMD_CHAT, c );
+		sigCommand( CMD_CHAT, curId, c );
 		return;
 	}
 	if ( startsWith(c, "MSG:") )
 	{
 		skipSpc(c);
-		sigCommand( CMD_MSG, c );
+		sigCommand( CMD_MSG, curId, c );
 		return;
 	}
 	if ( startsWith(c, "CTRESET") )
 	{
 		// unreliable
 		skipSpc(c);
-		sigCommand( CMD_CTRESET, c );
+		sigCommand( CMD_CTRESET, curId, c );
 		return;
 	}
 	if ( startsWith(c, "CT:") )
 	{
 		// unreliable
-		sigCommand( CMD_CT, c );
+		sigCommand( CMD_CT, curId, c );
 		return;
 	}
 	if ( startsWith(c, "GL:") )
 	{
 		// unreliable
-		sigCommand( CMD_GL, c );
+		sigCommand( CMD_GL, curId, c );
 		return;
 	}
 	if ( startsWith(c, "SECUSER:") )
 	{
 		skipSpc(c);
-		sigCommand( CMD_SECUSER, c );
+		sigCommand( CMD_SECUSER, curId, c );
 		return;
 	}
 	if ( startsWith(c, "FMR:") )
@@ -386,25 +386,25 @@ void TLCVClient::receive( const QByteArray &arr )
 	if ( startsWith(c, "WPV:") )
 	{
 		skipSpc(c);
-		sigCommand( CMD_WPV, c );
+		sigCommand( CMD_WPV, curId, c );
 		return;
 	}
 	if ( startsWith(c, "BPV:") )
 	{
 		skipSpc(c);
-		sigCommand( CMD_BPV, c );
+		sigCommand( CMD_BPV, curId, c );
 		return;
 	}
 	if ( startsWith(c, "WTIME:") )
 	{
 		skipSpc(c);
-		sigCommand( CMD_WTIME, c );
+		sigCommand( CMD_WTIME, curId, c );
 		return;
 	}
 	if ( startsWith(c, "BTIME:") )
 	{
 		skipSpc(c);
-		sigCommand( CMD_BTIME, c );
+		sigCommand( CMD_BTIME, curId, c );
 		return;
 	}
 	if ( startsWith(c, "WMOVE:") )
@@ -461,7 +461,7 @@ void TLCVClient::receive( const QByteArray &arr )
 		processCommand( curId, CMD_SECUSER, c );
 		return;
 	}
-	sigCommand( CMD_UNKNOWN, c );
+	sigCommand( CMD_UNKNOWN, curId, c );
 }
 
 void TLCVClient::refresh()
@@ -530,7 +530,7 @@ void TLCVClient::updateBufferedCommands( qint64 stamp )
 		const BufferedCommand &bc = it->second;
 		if ( stamp - bc.stamp >= commandDelay )
 		{
-			sigCommand( bc.cmd, bc.text.c_str() );
+			sigCommand( bc.cmd, (AckType)it->first, bc.text.c_str() );
 			commands.erase( it );
 			it = itn;
 		} else it++;

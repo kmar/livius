@@ -29,6 +29,7 @@ freely, subject to the following restrictions:
 #include <QObject>
 #include <QString>
 #include "sig/signal.h"
+#include "ack.h"
 #include <deque>
 #include <set>
 #include <map>
@@ -141,8 +142,8 @@ public:
 	void getGameList();
 
 	// this is the most important callback!
-	// in: command, string
-	sig::Signal< void, int, const char * > sigCommand;
+	// in: command, id, string
+	sig::Signal< void, int, AckType, const char * > sigCommand;
 	// this is send if we lose connection with server or fail to connect!
 	// in: errorcode
 	sig::Signal< void, int > sigConnectionError;
@@ -160,7 +161,7 @@ public:
 
 private:
 	void receive( const QByteArray &arr );
-	void gotACK( quint32 id );
+	void gotACK( AckType id );
 	void processCommand( qint64 ack, Command id, const char *text );
 	void updateBufferedCommands( qint64 stamp );
 
@@ -177,7 +178,7 @@ private:
 
 	struct ReliableMessage
 	{
-		quint32 id;
+		AckType id;
 		QString msg;
 		qint64 stamp;		// timestamp (first sent)
 	};
@@ -185,10 +186,10 @@ private:
 	std::deque< ReliableMessage > queue;
 
 	// my reliable msg counter
-	quint32 counter;
+	AckType counter;
 	// set of last n acked messages
 	// we don't want to process them twice
-	std::set< quint32 > lastAcked;
+	std::set< AckType > lastAcked;
 
 	UDPClient *client;
 	QString nick;

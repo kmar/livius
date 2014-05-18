@@ -32,6 +32,7 @@ freely, subject to the following restrictions:
 #include <vector>
 #include "sig/signal.h"
 #include "chess/chess.h"
+#include "ack.h"
 
 class LiveInfo;
 class ChatInfo;
@@ -113,6 +114,14 @@ private:
 	// current gamelist
 	QStringList gameList;
 
+	struct MoveInfo
+	{
+		int color;
+		QString str;	// move text
+	};
+
+	std::map< AckType, MoveInfo > bufferedMoves;
+
 	std::set< QString > userSet;
 	MenuMap menu;
 
@@ -154,12 +163,15 @@ private:
 	void parsePV( int color, const char *c );
 	void parseTime( int color, const char *c );
 	void parseLevel( const char *c );
-	void parseMove( int color, const char * c );
-	void parseCommand( int cmd, const char *c );
+	bool parseMove( int color, AckType ack, const char *c, bool nobuffer = 0 );
+	void parseCommand( int cmd, AckType ack, const char *c );
 	void connectionError( int err );
 	void connectSignals( bool disconn = 0 );
 	void sendMessage( const QString &msg );
 	void changeNick( const QString &newNick );
+	void setRunning( bool flag );
+	// clears buffered moves with older acks (we got a valid move)
+	void clearBufferedMoves( AckType ack );
 };
 
 #endif // LIVEFRAME_H

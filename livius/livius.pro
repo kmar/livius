@@ -43,7 +43,8 @@ HEADERS  += mainwindow.h \
     pgndialog.h \
     chathighlight.h \
     aboutdialog.h \
-    debugconsoledialog.h
+    debugconsoledialog.h \
+    ack.h
 
 FORMS    += mainwindow.ui \
     liveinfo.ui \
