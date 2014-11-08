@@ -26,8 +26,10 @@ freely, subject to the following restrictions:
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QLabel>
+#include <QMdiSubWindow>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QFontDialog>
 #include "liveinfo.h"
 #include "liveframe.h"

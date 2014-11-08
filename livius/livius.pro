@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg network webkit
+QT       += core gui svg network webkit webkitwidgets
 
 include(../base/base.pri)
 include(../gui/gui.pri)
