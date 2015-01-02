@@ -23,6 +23,8 @@ freely, subject to the following restrictions:
    distribution.
 */
 
+// based on Tord Romstad's Looking for magics: https://chessprogramming.wikispaces.com/Looking+for+Magics
+
 #include "magic.h"
 #include <memory.h>
 
