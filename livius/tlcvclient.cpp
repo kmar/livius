@@ -496,9 +496,9 @@ void TLCVClient::refresh()
 			it->stamp = ms;
 		}
 	}
-	if ( ms - pingStamp >= 10000 )
+	if ( ms - pingStamp >= 20000 )
 	{
-		// send ping each 10 seconds
+		// send ping each 20 seconds
 		pingStamp = ms;
 		sendReliable("PING");
 	}
