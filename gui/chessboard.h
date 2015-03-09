@@ -104,7 +104,7 @@ public:
 	// add config vars for ChessBoard
 	static bool addConfig( config::ConfigVarBase *parent );
 signals:
-    
+
 public slots:
 
 private:

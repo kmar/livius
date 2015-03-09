@@ -46,7 +46,7 @@ void Zobrist::init()
 	// epFile
 	for (int i=0; i<8; i++)
 		epFile[i] = prng.next64();
-	
+
 	// piece
 	memset( piece, 0, sizeof(piece) );
 	for (Color c=ctWhite; c<=ctBlack; c++)

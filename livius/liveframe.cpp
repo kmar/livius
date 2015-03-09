@@ -631,7 +631,7 @@ void LiveFrame::reconnect()
 	chat->addMsg("Reconnecting...");
 	client->disconnect();
 	menu.clear();
-	sigMenuChanged( this, menu );	
+	sigMenuChanged( this, menu );
 	setRunning(0);
 	addCurrent(1);
 	client->reconnect();

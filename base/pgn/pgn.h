@@ -187,7 +187,7 @@ public:
 
 	PGNFile();
 	~PGNFile();
-	
+
     // start loading PGN file (background)
     bool load( const QString &fname );
 

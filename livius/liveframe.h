@@ -95,7 +95,7 @@ public:
 	TLCVClient *getClient() const;
 
 signals:
-    
+
 private slots:
 	void onTimer();
 

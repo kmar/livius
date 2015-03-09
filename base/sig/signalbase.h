@@ -80,19 +80,19 @@ public:
 		std::vector< SlotBase > v;	// make gcc happy
 		connections.swap( v );		// swap trick to reset capacity to 0
 	}
-	
+
 	// is enabled?
 	inline bool enabled() const
 	{
 		return enableFlag;
 	}
-	
+
 	// enable signal (by default all signals are enabled)
 	inline void enable( bool flag = 1 )
 	{
 		enableFlag = flag;
 	}
-	
+
 	inline void disable()
 	{
 		enableFlag = 0;

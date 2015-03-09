@@ -39,7 +39,7 @@ template< typename R, typename... P > class Signal : public SignalBase
 private:
 	typedef Slot< R, P... > Callback;
 public:
-	Connection connect( const Callback &cbk, bool disconn = 0 )	
+	Connection connect( const Callback &cbk, bool disconn = 0 )
 	{
 		if ( disconn )
 		{

@@ -30,7 +30,7 @@ freely, subject to the following restrictions:
 class PGNHighlighter : public QSyntaxHighlighter
 {
 	Q_OBJECT
-	
+
 public:
 	enum Type
 	{
@@ -43,7 +43,7 @@ public:
 		hlIdent,
 		hlMax
 	};
-	
+
 	PGNHighlighter(QTextDocument *document);
 	void setFormatFor( Type type, const QTextCharFormat &format );
 protected:

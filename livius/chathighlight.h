@@ -30,7 +30,7 @@ freely, subject to the following restrictions:
 class ChatHighlighter : public QSyntaxHighlighter
 {
 	Q_OBJECT
-	
+
 public:
 	enum Type
 	{
@@ -41,7 +41,7 @@ public:
 		hlNick,
 		hlMax
 	};
-	
+
 	ChatHighlighter(QTextDocument *document);
 	void setFormatFor( Type type, const QTextCharFormat &format );
 protected:
