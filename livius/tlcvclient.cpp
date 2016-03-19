@@ -82,7 +82,7 @@ void UDPClient::receive()
 	QHostAddress host;
 	quint16 port;
 	qint64 nr = socket->readDatagram(data, size, &host, &port);
-	if ( nr != size || port != hostPort || host.toString() != hostAdr->toString() )
+	if ( nr != size || port != hostPort || host.toIPv4Address() != hostAdr->toIPv4Address() )
 		return;
 	// we need zero-terminated data
 	onReceive(arr);
