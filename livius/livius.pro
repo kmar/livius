@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg network webkit webkitwidgets
+QT       += core gui svg network
 
 include(../base/base.pri)
 include(../gui/gui.pri)
@@ -25,7 +25,6 @@ SOURCES += main.cpp\
     connectiondialog.cpp \
     resultsdialog.cpp \
     emailgamedialog.cpp \
-    urlbrowserdialog.cpp \
     pgndialog.cpp \
     chathighlight.cpp \
     aboutdialog.cpp \
@@ -39,7 +38,6 @@ HEADERS  += mainwindow.h \
     connectiondialog.h \
     resultsdialog.h \
     emailgamedialog.h \
-    urlbrowserdialog.h \
     pgndialog.h \
     chathighlight.h \
     aboutdialog.h \
@@ -52,7 +50,6 @@ FORMS    += mainwindow.ui \
     connectiondialog.ui \
     resultsdialog.ui \
     emailgamedialog.ui \
-    urlbrowserdialog.ui \
     pgndialog.ui \
     aboutdialog.ui \
     debugconsoledialog.ui

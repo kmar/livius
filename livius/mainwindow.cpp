@@ -38,7 +38,6 @@ freely, subject to the following restrictions:
 #include "chessboard.h"
 #include "resultsdialog.h"
 #include "emailgamedialog.h"
-#include "urlbrowserdialog.h"
 #include "pgndialog.h"
 #include "aboutdialog.h"
 #include "debugconsoledialog.h"
@@ -198,9 +197,7 @@ void MainWindow::menuAction(int id)
 		if ( i == id )
 		{
 			const LiveFrame::MenuItem &mi = ci->second;
-			UrlBrowserDialog ubd( this );
-			ubd.setURL( mi.url );
-			ubd.exec();
+			QDesktopServices::openUrl( QUrl(mi.url) );
 			break;
 		}
 		i++;
