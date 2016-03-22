@@ -14,3 +14,5 @@ contributors
 ------------
 Philipp Classen:
     Qt 5 fixes and a nice Makefile
+Felix Braun:
+    IPv6 fix
