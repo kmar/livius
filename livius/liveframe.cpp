@@ -374,7 +374,7 @@ void LiveFrame::connectionError( int err )
 
 bool LiveFrame::parseMenu( const char * c )
 {
-	TokenType tt;
+	config::TokenType tt;
 	Token tok;
 	int line = 1;
 	// should be ID=n WIDTH=n HEIGHT=n NAME=str URL=str

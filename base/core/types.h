@@ -64,7 +64,7 @@ template < class T > T abs( const T &x )
 }
 
 // "thanks" Qt :)
-#ifdef QT_NO_DEBUG
+#if defined(QT_NO_DEBUG) && !defined(NDEBUG)
 #   define NDEBUG
 #endif
 
