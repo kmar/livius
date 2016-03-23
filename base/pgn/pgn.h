@@ -142,7 +142,6 @@ class PGNIndexParser
 	cheng4::u64 ofs;
 	cheng4::u64 line;
 	cheng4::u64 column;
-	cheng4::u32 count;
 	std::vector< PGNIndex > &index;
 	QString error;
 
