@@ -25,10 +25,10 @@ freely, subject to the following restrictions:
 
 #pragma once
 
-#include "core/types.h"
-#include "core/thread.h"
-#include "chess/board.h"
-#include "sig/signal.h"
+#include "../core/types.h"
+#include "../core/thread.h"
+#include "../chess/board.h"
+#include "../sig/signal.h"
 #include <vector>
 #include <map>
 #include <QString>
