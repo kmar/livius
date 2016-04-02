@@ -31,7 +31,7 @@ freely, subject to the following restrictions:
 ChessBoard::ChessBoard(QWidget *parent) :
 	QWidget(parent), pieceSet(0)
 {
-    init();
+	init();
 	setMinimumWidth( 128 );
 	setMinimumHeight( 128 );
 }
@@ -94,9 +94,9 @@ QColor ChessBoard::letterColor(255, 255, 255);
 
 void ChessBoard::init()
 {
-    border = 1;
-    flipped = 0;
-    board.reset();
+	border = 1;
+	flipped = 0;
+	board.reset();
 	highlight = cheng4::mcNone;
 }
 
@@ -182,65 +182,65 @@ void ChessBoard::incMoveNumber()
 }
 
 void ChessBoard::renderBoard( QPainter &p, const QRectF &rc, bool flip,
-    const std::vector<cheng4::Square> *excludeSquares )
+	const std::vector<cheng4::Square> *excludeSquares )
 {
-    qreal maxh = std::max( rc.width(), rc.height() )/14;
-    maxh = 18;
+	qreal maxh = std::max( rc.width(), rc.height() )/14;
+	maxh = 18;
 	qreal bordersz = maxh;
 	if ( !border )
 		bordersz = 0;
 	qreal sw = (rc.width() - 2*bordersz) / 8;
 	qreal sh = (rc.height() - 2*bordersz) / 8;
-    sh = sw = std::min(sw, sh);
+	sh = sw = std::min(sw, sh);
 
-    QColor wb[2] = { QColor(255, 255, 255, 255), QColor(0, 0, 0, 255) };
+	QColor wb[2] = { QColor(255, 255, 255, 255), QColor(0, 0, 0, 255) };
 
 	QColor bord = borderColor;
 
 	QBrush lightb(lightColor);
 	QBrush darkb(darkColor);
-    p.setPen(Qt::transparent);
-    // render border...
-    p.setBrush( QBrush(bord) );
+	p.setPen(Qt::transparent);
+	// render border...
+	p.setBrush( QBrush(bord) );
 	p.drawRect(QRectF(rc.left(), rc.top(), 8*sw + 2*bordersz+1, 8*sh + 2*bordersz+1));
 
-    QPen bpen( QColor(0, 0, 0, 128) );
-    bpen.setWidth(1);
-    p.setPen( bpen );
-    p.setBrush( Qt::transparent );
-    QRectF brect;
+	QPen bpen( QColor(0, 0, 0, 128) );
+	bpen.setWidth(1);
+	p.setPen( bpen );
+	p.setBrush( Qt::transparent );
+	QRectF brect;
 	brect.setTopLeft( QPoint(bordersz-1, bordersz-1) );
-    brect.setSize( QSizeF(8*sw+2, 8*sh+2) );
-    p.drawRect( brect );
+	brect.setSize( QSizeF(8*sw+2, 8*sh+2) );
+	p.drawRect( brect );
 
-    brect.setTopLeft( QPoint(0, 0) );
+	brect.setTopLeft( QPoint(0, 0) );
 	brect.setSize( QSizeF(8*sw+2*bordersz, 8*sh+2*bordersz) );
-    p.drawRect( brect );
+	p.drawRect( brect );
 
-    p.setPen( Qt::transparent );
+	p.setPen( Qt::transparent );
 
-    for (cheng4::Square s = 0; s < 64; s++)
-    {
-        cheng4::File f = cheng4::SquarePack::file(s);
-        cheng4::Rank r = cheng4::SquarePack::rank(s);
+	for (cheng4::Square s = 0; s < 64; s++)
+	{
+		cheng4::File f = cheng4::SquarePack::file(s);
+		cheng4::Rank r = cheng4::SquarePack::rank(s);
 		QRectF sub(rc.left() + sw*f + bordersz, rc.top() + sh*r + bordersz, sw, sh);
-        cheng4::Square sq = flip ? cheng4::SquarePack::flipH(cheng4::SquarePack::flipV(s)) : s;
+		cheng4::Square sq = flip ? cheng4::SquarePack::flipH(cheng4::SquarePack::flipV(s)) : s;
 
 
-        p.setBrush( ((f+r) & 1) ? darkb : lightb );
-        p.drawRect( sub );
-        if ( excludeSquares && std::find(excludeSquares->begin(), excludeSquares->end(), sq)
-             != excludeSquares->end() )
-            continue;
+		p.setBrush( ((f+r) & 1) ? darkb : lightb );
+		p.drawRect( sub );
+		if ( excludeSquares && std::find(excludeSquares->begin(), excludeSquares->end(), sq)
+			 != excludeSquares->end() )
+			continue;
 
-        cheng4::Piece pc = board.piece(sq);
-        cheng4::Piece pt = cheng4::PiecePack::type(pc);
-        if ( pt == cheng4::ptNone )
-            continue;
-        cheng4::Color c = cheng4::PiecePack::color(pc);
+		cheng4::Piece pc = board.piece(sq);
+		cheng4::Piece pt = cheng4::PiecePack::type(pc);
+		if ( pt == cheng4::ptNone )
+			continue;
+		cheng4::Color c = cheng4::PiecePack::color(pc);
 		if ( !pieceSet || !pieceSet->pieces[c][pt-1] )
 			continue;
-        pieceSet->pieces[c][pt-1]->renderer()->render(&p, sub);
+		pieceSet->pieces[c][pt-1]->renderer()->render(&p, sub);
 	}
 
 	// FIXME: better!!!
@@ -270,157 +270,157 @@ void ChessBoard::renderBoard( QPainter &p, const QRectF &rc, bool flip,
 	if ( !border )
 		return;
 
-    // draw board letters
+	// draw board letters
 	p.setPen( letterColor );
-    QTextOption opt;
-    opt.setAlignment(Qt::AlignCenter);
-    QFont font;
-    font.setBold(0);
-    font.setPixelSize(12);
-    p.setFont(font);
-    for (uint i=0; i<8; i++)
-    {
-        // rows:
+	QTextOption opt;
+	opt.setAlignment(Qt::AlignCenter);
+	QFont font;
+	font.setBold(0);
+	font.setPixelSize(12);
+	p.setFont(font);
+	for (uint i=0; i<8; i++)
+	{
+		// rows:
 		QPointF pt( 0, bordersz + sh*i );
-        QRectF rct;
-        rct.setTopLeft( pt );
+		QRectF rct;
+		rct.setTopLeft( pt );
 		rct.setSize( QSizeF( bordersz, sh ) );
-        QString text;
-        int irow = 7-(int)i;
-        if ( flip )
-            irow = 8-1-irow;
-        text.sprintf("%d", irow+1);
-        p.drawText(rct, text, opt);
+		QString text;
+		int irow = 7-(int)i;
+		if ( flip )
+			irow = 8-1-irow;
+		text.sprintf("%d", irow+1);
+		p.drawText(rct, text, opt);
 		pt.setX( bordersz+sw*8 );
-        rct.setTopLeft( pt );
+		rct.setTopLeft( pt );
 		rct.setSize( QSizeF( bordersz, sh ) );
-        p.drawText(rct, text, opt);
-        // cols:
-        int icol = (int)i;
-        if ( flip )
-            icol = 8-1-i;
-        text.sprintf("%c", 'a' + icol);
+		p.drawText(rct, text, opt);
+		// cols:
+		int icol = (int)i;
+		if ( flip )
+			icol = 8-1-i;
+		text.sprintf("%c", 'a' + icol);
 		pt.setX( bordersz + sw*i );
-        pt.setY( 0 );
-        rct.setTopLeft(pt);
+		pt.setY( 0 );
+		rct.setTopLeft(pt);
 		rct.setSize( QSizeF( sw, bordersz ) );
-        p.drawText(rct, text, opt);
+		p.drawText(rct, text, opt);
 		pt.setY( bordersz+sh*8 );
-        rct.setTopLeft( pt );
+		rct.setTopLeft( pt );
 		rct.setSize( QSizeF( sw, bordersz ) );
-        p.drawText(rct, text, opt);
-    }
-    // draw stm
-    QRectF upr;
+		p.drawText(rct, text, opt);
+	}
+	// draw stm
+	QRectF upr;
 	upr.setTopLeft( QPointF( bordersz + sw*8 + bordersz/8, bordersz/8 ) );
 	upr.setSize( QSizeF( bordersz - 2*bordersz/8, bordersz - 2*bordersz/8 ) );
 
-    bool upper = board.turn() == (flip ? cheng4::ctWhite : cheng4::ctBlack);
+	bool upper = board.turn() == (flip ? cheng4::ctWhite : cheng4::ctBlack);
 
-    p.setPen( wb[ cheng4::flip(board.turn()) ] );
-    p.setBrush( wb[ board.turn() ] );
+	p.setPen( wb[ cheng4::flip(board.turn()) ] );
+	p.setBrush( wb[ board.turn() ] );
 
-    if ( upper )
-        p.drawRect( upr );
+	if ( upper )
+		p.drawRect( upr );
 
-    QRectF lwr;
+	QRectF lwr;
 	lwr.setTopLeft( QPointF( bordersz + sw*8 + bordersz/8, bordersz + sh*8 + bordersz/8 ) );
 	lwr.setSize( QSizeF( bordersz - 2*bordersz/8, bordersz - 2*bordersz/8 ) );
 
-    if ( !upper )
-        p.drawRect( lwr );
+	if ( !upper )
+		p.drawRect( lwr );
 }
 
 void ChessBoard::paintEvent(QPaintEvent * /*e*/)
 {
-    QImage img( size, QImage::Format_RGB32 );
-    QPainter p( &img );
-    p.setRenderHint(QPainter::Antialiasing, 1);
+	QImage img( size, QImage::Format_RGB32 );
+	QPainter p( &img );
+	p.setRenderHint(QPainter::Antialiasing, 1);
 
 	p.setPen(QColor(128, 128, 128));
 	p.setBrush(QBrush( QColor(128, 128, 128) ));
-    QRect full(0, 0, size.width(), size.height());
+	QRect full(0, 0, size.width(), size.height());
 	p.drawRect( full );
 
-    // render p
-    // render board
+	// render p
+	// render board
 //    QRectF rc(0, 0, 128, 128);
 //    pieceSet->pieces[0][0]->renderer()->render(&p, rc);
 
-    renderBoard( p, QRectF(full), flipped );
+	renderBoard( p, QRectF(full), flipped );
 
-    QPainter p2( this );
-    p2.drawImage( 0, 0, img);
+	QPainter p2( this );
+	p2.drawImage( 0, 0, img);
 }
 
 void ChessBoard::resizeEvent(QResizeEvent *evt)
 {
-    size = evt->size();
-    QWidget::resizeEvent(evt);
+	size = evt->size();
+	QWidget::resizeEvent(evt);
 }
 
 void ChessBoard::mousePressEvent(QMouseEvent *evt)
 {
-    if ( evt->button() == Qt::LeftButton )
-        leftButtonDown( evt );
-    else if ( evt->button() == Qt::RightButton )
-        rightButtonDown( evt );
-    QWidget::mousePressEvent( evt );
+	if ( evt->button() == Qt::LeftButton )
+		leftButtonDown( evt );
+	else if ( evt->button() == Qt::RightButton )
+		rightButtonDown( evt );
+	QWidget::mousePressEvent( evt );
 }
 
 void ChessBoard::mouseReleaseEvent(QMouseEvent *evt)
 {
-    if ( evt->button() == Qt::LeftButton )
-        leftButtonUp( evt );
-    else if ( evt->button() == Qt::RightButton )
-        rightButtonUp( evt );
-    QWidget::mouseReleaseEvent( evt );
+	if ( evt->button() == Qt::LeftButton )
+		leftButtonUp( evt );
+	else if ( evt->button() == Qt::RightButton )
+		rightButtonUp( evt );
+	QWidget::mouseReleaseEvent( evt );
 }
 
 void ChessBoard::leftButtonDown(QMouseEvent *evt)
 {
-    (void)evt;
+	(void)evt;
 }
 
 void ChessBoard::leftButtonUp(QMouseEvent *evt)
 {
-    (void)evt;
+	(void)evt;
 }
 
 void ChessBoard::rightButtonDown(QMouseEvent *evt)
 {
-    (void)evt;
+	(void)evt;
 }
 
 void ChessBoard::rightButtonUp(QMouseEvent *evt)
 {
-    (void)evt;
+	(void)evt;
 }
 
 void ChessBoard::mouseMoveEvent( QMouseEvent *evt )
 {
-    QWidget::mouseMoveEvent( evt );
+	QWidget::mouseMoveEvent( evt );
 }
 
 void ChessBoard::wheelEvent( QWheelEvent *evt )
 {
-    QWidget::wheelEvent( evt );
+	QWidget::wheelEvent( evt );
 }
 
 void ChessBoard::setPieceSet( PieceSet *pset )
 {
-    pieceSet = pset;
+	pieceSet = pset;
 }
 
 void ChessBoard::setBorder( bool flag )
 {
-    border = flag;
+	border = flag;
 	update();
 }
 
 bool ChessBoard::hasBorder() const
 {
-    return border;
+	return border;
 }
 
 // compute border color from light and dark (average)

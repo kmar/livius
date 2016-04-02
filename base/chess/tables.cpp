@@ -80,26 +80,26 @@ void Tables::init()
 {
 	// bitcount/lsbit/msbit tables
 	for (u32 i=0; i<65536; i++)
-    {
-        uint bc = 0;
-        for (uint j=0; j<16; j++)
-            if ( i & (1 << j) )
-                bc++;
+	{
+		uint bc = 0;
+		for (uint j=0; j<16; j++)
+			if ( i & (1 << j) )
+				bc++;
 
-        popCount16[ i ] = (u8)bc;
+		popCount16[ i ] = (u8)bc;
 		if ( i < 256 )
 			popCount8[ i ] = (u8)bc;
 
-        for (uint j=0; j<16; j++)
-        {
-            if ( i & (1<<j) )
-                lsBit16[i] = (u8)j;
-            if ( i & (1<<(15-j)) )
-                msBit16[i] = (u8)(15-j);
-        }
+		for (uint j=0; j<16; j++)
+		{
+			if ( i & (1<<j) )
+				lsBit16[i] = (u8)j;
+			if ( i & (1<<(15-j)) )
+				msBit16[i] = (u8)(15-j);
+		}
 	}
 
-    memset( noneShlTab, 255, sizeof(noneShlTab) );
+	memset( noneShlTab, 255, sizeof(noneShlTab) );
 
 	// shift tables + king/knight attack masks
 	for (Square i=0; i<64; i++)
@@ -114,14 +114,14 @@ void Tables::init()
 		kingAttm[i] = b & noneShlTab[i];
 		b = oneShlTab[i];
 		Bitboard km = 0;
-        km |= (b << 17) & L1MASK;
-        km |= (b << 15) & R1MASK;
-        km |= (b >> 17) & R1MASK;
-        km |= (b >> 15) & L1MASK;
-        km |= (b << 10) & L2MASK;
-        km |= (b << 6) & R2MASK;
-        km |= (b >> 10) & R2MASK;
-        km |= (b >> 6) & L2MASK;
+		km |= (b << 17) & L1MASK;
+		km |= (b << 15) & R1MASK;
+		km |= (b >> 17) & R1MASK;
+		km |= (b >> 15) & L1MASK;
+		km |= (b << 10) & L2MASK;
+		km |= (b << 6) & R2MASK;
+		km |= (b >> 10) & R2MASK;
+		km |= (b >> 6) & L2MASK;
 		knightAttm[i] = km;
 	}
 
@@ -421,29 +421,29 @@ void BitOp::init()
 		hwPopCnt = (id[2] & 0x800000) != 0;
 	}
 #elif defined(__GNUC__)
-    int id[4] = {0};
-    asm(
-        "cpuid":
-        "=a" (id[0]),
-        "=b" (id[1]),
-        "=c" (id[2]),
-        "=d" (id[3]) :
-        "a" (0)
-    );
-    int nids = id[0];
-    if ( nids >= 2 )
-    {
-        id[2] = 0;
-        asm(
-            "cpuid":
-            "=a" (id[0]),
-            "=b" (id[1]),
-            "=c" (id[2]),
-            "=d" (id[3]) :
-            "a" (1)
-        );
+	int id[4] = {0};
+	asm(
+		"cpuid":
+		"=a" (id[0]),
+		"=b" (id[1]),
+		"=c" (id[2]),
+		"=d" (id[3]) :
+		"a" (0)
+	);
+	int nids = id[0];
+	if ( nids >= 2 )
+	{
+		id[2] = 0;
+		asm(
+			"cpuid":
+			"=a" (id[0]),
+			"=b" (id[1]),
+			"=c" (id[2]),
+			"=d" (id[3]) :
+			"a" (1)
+		);
 		hwPopCnt = (id[2] & 0x800000) != 0;
-    }
+	}
 #endif
 }
 

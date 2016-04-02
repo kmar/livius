@@ -96,18 +96,18 @@ void Board::clear()
 	memset( this, 0, sizeof(*this) );
 	frc = arenaMode = 0;
 	curMove = 1;
-    bb[ BBI( ctWhite, ptPawn ) ]	= 0;
-    bb[ BBI( ctBlack, ptPawn ) ]	= 0;
-    bb[ BBI( ctWhite, ptKnight ) ]	= 0;
-    bb[ BBI( ctBlack, ptKnight ) ]	= 0;
-    bb[ BBI( ctWhite, ptBishop ) ]	= 0;
-    bb[ BBI( ctBlack, ptBishop ) ]	= 0;
-    bb[ BBI( ctWhite, ptRook ) ]	= 0;
-    bb[ BBI( ctBlack, ptRook ) ]	= 0;
-    bb[ BBI( ctWhite, ptQueen ) ]	= 0;
-    bb[ BBI( ctBlack, ptQueen ) ]	= 0;
-    bb[ bbiWOcc ]					= 0;
-    bb[ bbiBOcc ]					= 0;
+	bb[ BBI( ctWhite, ptPawn ) ]	= 0;
+	bb[ BBI( ctBlack, ptPawn ) ]	= 0;
+	bb[ BBI( ctWhite, ptKnight ) ]	= 0;
+	bb[ BBI( ctBlack, ptKnight ) ]	= 0;
+	bb[ BBI( ctWhite, ptBishop ) ]	= 0;
+	bb[ BBI( ctBlack, ptBishop ) ]	= 0;
+	bb[ BBI( ctWhite, ptRook ) ]	= 0;
+	bb[ BBI( ctBlack, ptRook ) ]	= 0;
+	bb[ BBI( ctWhite, ptQueen ) ]	= 0;
+	bb[ BBI( ctBlack, ptQueen ) ]	= 0;
+	bb[ bbiWOcc ]					= 0;
+	bb[ bbiBOcc ]					= 0;
 
 	bkingPos[ ctWhite ] = E1;
 	bkingPos[ ctBlack ] = E8;
@@ -125,18 +125,18 @@ void Board::reset()
 	memset( this, 0, sizeof(*this) );
 	frc = arenaMode = 0;
 	curMove = 1;
-    bb[ BBI( ctWhite, ptPawn ) ]	= U64C( 0x00ff000000000000 );
-    bb[ BBI( ctBlack, ptPawn ) ]	= U64C( 0x000000000000ff00 );
-    bb[ BBI( ctWhite, ptKnight ) ]	= U64C( 0x4200000000000000 );
-    bb[ BBI( ctBlack, ptKnight ) ]	= U64C( 0x0000000000000042 );
-    bb[ BBI( ctWhite, ptBishop ) ]	= U64C( 0x2400000000000000 );
-    bb[ BBI( ctBlack, ptBishop ) ]	= U64C( 0x0000000000000024 );
-    bb[ BBI( ctWhite, ptRook ) ]	= U64C( 0x8100000000000000 );
-    bb[ BBI( ctBlack, ptRook ) ]	= U64C( 0x0000000000000081 );
-    bb[ BBI( ctWhite, ptQueen ) ]	= U64C( 0x0800000000000000 );
-    bb[ BBI( ctBlack, ptQueen ) ]	= U64C( 0x0000000000000008 );
-    bb[ bbiWOcc ]					= U64C( 0xffff000000000000 );
-    bb[ bbiBOcc ]					= U64C( 0x000000000000ffff );
+	bb[ BBI( ctWhite, ptPawn ) ]	= U64C( 0x00ff000000000000 );
+	bb[ BBI( ctBlack, ptPawn ) ]	= U64C( 0x000000000000ff00 );
+	bb[ BBI( ctWhite, ptKnight ) ]	= U64C( 0x4200000000000000 );
+	bb[ BBI( ctBlack, ptKnight ) ]	= U64C( 0x0000000000000042 );
+	bb[ BBI( ctWhite, ptBishop ) ]	= U64C( 0x2400000000000000 );
+	bb[ BBI( ctBlack, ptBishop ) ]	= U64C( 0x0000000000000024 );
+	bb[ BBI( ctWhite, ptRook ) ]	= U64C( 0x8100000000000000 );
+	bb[ BBI( ctBlack, ptRook ) ]	= U64C( 0x0000000000000081 );
+	bb[ BBI( ctWhite, ptQueen ) ]	= U64C( 0x0800000000000000 );
+	bb[ BBI( ctBlack, ptQueen ) ]	= U64C( 0x0000000000000008 );
+	bb[ bbiWOcc ]					= U64C( 0xffff000000000000 );
+	bb[ bbiBOcc ]					= U64C( 0x000000000000ffff );
 
 	bkingPos[ ctWhite ] = E1;
 	bkingPos[ ctBlack ] = E8;
@@ -1579,28 +1579,28 @@ Move Board::fromSAN( const std::string &str ) const
 
 bool Board::compare( const Board &tmp ) const
 {
-    if ( tmp.bhash != bhash )
-        return 0;
-    if ( tmp.bpawnHash != bpawnHash )
-        return 0;
+	if ( tmp.bhash != bhash )
+		return 0;
+	if ( tmp.bpawnHash != bpawnHash )
+		return 0;
 	if ( memcmp( tmp.bb, bb, inCheck() ? sizeof(bb) : sizeof(Bitboard) * bbiEvMask ) != 0 )
-        return 0;
-    if ( memcmp( tmp.bpieces, bpieces, sizeof(bpieces) ) != 0 )
-        return 0;
-    if ( memcmp( tmp.bnpmat, bnpmat, sizeof(bnpmat) ) != 0 )
-        return 0;
-    if ( memcmp( tmp.bkingPos, bkingPos, sizeof(bkingPos) ) != 0 )
-        return 0;
-    if ( tmp.bturn != bturn )
-        return 0;
-    if ( tmp.bep != bep )
-        return 0;
+		return 0;
+	if ( memcmp( tmp.bpieces, bpieces, sizeof(bpieces) ) != 0 )
+		return 0;
+	if ( memcmp( tmp.bnpmat, bnpmat, sizeof(bnpmat) ) != 0 )
+		return 0;
+	if ( memcmp( tmp.bkingPos, bkingPos, sizeof(bkingPos) ) != 0 )
+		return 0;
+	if ( tmp.bturn != bturn )
+		return 0;
+	if ( tmp.bep != bep )
+		return 0;
 /*    if ( tmp.bfifty != bfifty )
-        return 0;*/
-    if ( memcmp( tmp.bcastRights, bcastRights, sizeof(bcastRights) ) != 0 )
-        return 0;
-    if ( tmp.bcheck != bcheck )
-        return 0;
+		return 0;*/
+	if ( memcmp( tmp.bcastRights, bcastRights, sizeof(bcastRights) ) != 0 )
+		return 0;
+	if ( tmp.bcheck != bcheck )
+		return 0;
 	return 1;
 }
 
@@ -1641,28 +1641,28 @@ bool Board::isValid() const
 	if ( memcmp( tmp.bpieces, opieces, sizeof(opieces) ) )
 		return 0;
 
-    if ( tmp.bhash != bhash )
-        return 0;
-    if ( tmp.bpawnHash != bpawnHash )
-        return 0;
+	if ( tmp.bhash != bhash )
+		return 0;
+	if ( tmp.bpawnHash != bpawnHash )
+		return 0;
 	if ( memcmp( tmp.bb, bb, inCheck() ? sizeof(bb) : sizeof(Bitboard) * bbiEvMask ) != 0 )
-        return 0;
-    if ( memcmp( tmp.bpieces, bpieces, sizeof(bpieces) ) != 0 )
-        return 0;
-    if ( memcmp( tmp.bnpmat, bnpmat, sizeof(bnpmat) ) != 0 )
-        return 0;
-    if ( memcmp( tmp.bkingPos, bkingPos, sizeof(bkingPos) ) != 0 )
-        return 0;
-    if ( tmp.bturn != bturn )
-        return 0;
-    if ( tmp.bep != bep )
-        return 0;
-    if ( tmp.bfifty != bfifty )
-        return 0;
-    if ( memcmp( tmp.bcastRights, bcastRights, sizeof(bcastRights) ) != 0 )
-        return 0;
-    if ( tmp.bcheck != bcheck )
-        return 0;
+		return 0;
+	if ( memcmp( tmp.bpieces, bpieces, sizeof(bpieces) ) != 0 )
+		return 0;
+	if ( memcmp( tmp.bnpmat, bnpmat, sizeof(bnpmat) ) != 0 )
+		return 0;
+	if ( memcmp( tmp.bkingPos, bkingPos, sizeof(bkingPos) ) != 0 )
+		return 0;
+	if ( tmp.bturn != bturn )
+		return 0;
+	if ( tmp.bep != bep )
+		return 0;
+	if ( tmp.bfifty != bfifty )
+		return 0;
+	if ( memcmp( tmp.bcastRights, bcastRights, sizeof(bcastRights) ) != 0 )
+		return 0;
+	if ( tmp.bcheck != bcheck )
+		return 0;
 	return 1;
 }
 

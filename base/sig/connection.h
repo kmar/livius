@@ -56,7 +56,7 @@ public:
 	}
 
 	// lt test to allow stl sorting
-    bool operator <( const Connection &o ) const
+	bool operator <( const Connection &o ) const
 	{
 		if ( signalRef != o.signalRef )
 			return signalRef < o.signalRef;

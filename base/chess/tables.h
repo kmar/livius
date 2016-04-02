@@ -175,7 +175,7 @@ struct BitOp
 	{
 		assert( m );
 #ifndef _MSC_VER
-    #if defined(__GNUC__) && defined(__i386__)
+	#if defined(__GNUC__) && defined(__i386__)
 		i32 res;
 		asm(
 			"bsfl (%1),%%eax;"
@@ -183,35 +183,35 @@ struct BitOp
 			"bsfl 4(%1),%%eax;"
 			"orl $0x20,%%eax;"
 			"0:movl %%eax,%0" :
-            "=r" (res) :
-            "r" (&m) :
+			"=r" (res) :
+			"r" (&m) :
 		"cc", "eax"
-        );
+		);
 		return res;
-    #elif defined(__GNUC__) && defined(IS_X64)
-        u64 res;
-        asm(
-            "bsfq %1, %0" :
-            "=r" (res) :
+	#elif defined(__GNUC__) && defined(IS_X64)
+		u64 res;
+		asm(
+			"bsfq %1, %0" :
+			"=r" (res) :
 			"rm" (m) : "cc"
-        );
-        return (uint)(res & 0xffffffffu);
+		);
+		return (uint)(res & 0xffffffffu);
 //        return __builtin_ffsl(m);     // FIXME: doesn't work here => I wonder why?
-    #else
+	#else
 		for (uint i=0; m && i<4*16; i+=16, m >>= 16)
 		{
 			u16 p = (u16)m;
-            if ( p )
-                return Tables::lsBit16[ p ] + i;
+			if ( p )
+				return Tables::lsBit16[ p ] + i;
 		}
 		return 0u-1u;
-    #endif
+	#endif
 #else
-    #if defined ( _M_AMD64 ) || defined ( _M_X64 )
+	#if defined ( _M_AMD64 ) || defined ( _M_X64 )
 		unsigned long index;
 		_BitScanForward64(&index, m);
 		return index;
-    #else
+	#else
 		__asm
 		{
 			bsf eax, dword ptr [m]
@@ -220,7 +220,7 @@ struct BitOp
 			or eax, 32
 done:
 		}
-    #endif
+	#endif
 #endif
 	}
 
@@ -235,7 +235,7 @@ done:
 	{
 		assert( m );
 #ifndef _MSC_VER
-    #if defined(__GNUC__) && defined(__i386__)
+	#if defined(__GNUC__) && defined(__i386__)
 		u32 res;
 		asm(
 			"bsrl 4(%1),%%eax;"
@@ -249,30 +249,30 @@ done:
 		"cc", "eax"
 			);
 		return (uint)res;
-    #elif defined(__GNUC__) && defined(IS_X64)
-        u64 res;
-        asm(
-            "bsrq %1, %0" :
-            "=r" (res) :
+	#elif defined(__GNUC__) && defined(IS_X64)
+		u64 res;
+		asm(
+			"bsrq %1, %0" :
+			"=r" (res) :
 			"rm" (m) : "cc"
-        );
-        return (uint)(res & 0xffffffffu);
-    #else
+		);
+		return (uint)(res & 0xffffffffu);
+	#else
 		for (uint i=3*16; m; i-=16, m <<= 16)
 		{
 			u16 p = (u16)((m >> 48) & 0xffffu);
-            if ( p )
-                return (uint)(Tables::msBit16[ p ] + i);
+			if ( p )
+				return (uint)(Tables::msBit16[ p ] + i);
 		}
 		return (uint)(0u-1u);
-    #endif
+	#endif
 #else
-    #if defined ( _M_AMD64 ) || defined ( _M_X64 )
+	#if defined ( _M_AMD64 ) || defined ( _M_X64 )
 		unsigned long index;
 		unsigned char isNonzero;
 		isNonzero = _BitScanReverse64(&index, m);
 		return (uint)(index & 0xffffffffu);
-    #else
+	#else
 		__asm
 		{
 			bsr eax, dword ptr [m+4]	//edi
@@ -283,7 +283,7 @@ done1:
 			or eax, 32
 done:
 		}
-    #endif
+	#endif
 #endif
 	}
 
@@ -310,29 +310,29 @@ done:
 				#endif
 			#endif
 		#elif defined(__GNUC__)
-            #if defined(IS_X64)
-                u64 res;
-                asm(
-                    "popcnt %1, %0" :
-                    "=r" (res) :
-                    "rm" (val) : "cc"
-                );
-                return (uint)(res & 0xffffffffu);
-            #else
-                u32 res, res2;
-                asm(
-                    "popcnt %1, %0" :
-                    "=r" (res) :
-                    "rm" ((u32)(val & 0xffffffffu)) : "cc"
-                );
-                asm(
-                    "popcnt %1, %0" :
-                    "=r" (res2) :
-                    "rm" ((u32)(val >> 32)) : "cc"
-                );
-                return (uint)(res+res2);
-            #endif
-        #else
+			#if defined(IS_X64)
+				u64 res;
+				asm(
+					"popcnt %1, %0" :
+					"=r" (res) :
+					"rm" (val) : "cc"
+				);
+				return (uint)(res & 0xffffffffu);
+			#else
+				u32 res, res2;
+				asm(
+					"popcnt %1, %0" :
+					"=r" (res) :
+					"rm" ((u32)(val & 0xffffffffu)) : "cc"
+				);
+				asm(
+					"popcnt %1, %0" :
+					"=r" (res2) :
+					"rm" ((u32)(val >> 32)) : "cc"
+				);
+				return (uint)(res+res2);
+			#endif
+		#else
 			assert( 0 && "HW popcount not supported" );
 			return 0;
 		#endif

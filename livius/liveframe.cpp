@@ -51,7 +51,7 @@ LiveFrame::LiveFrame(QWidget *parent, PieceSet *pset, const QString &nick, const
 	quint16 port) :
 	super(parent), client(0), running(0)
 {
-    setAttribute(Qt::WA_DeleteOnClose);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	info = new LiveInfo( this, pset );
 	board = new ChessBoard( this );
@@ -97,8 +97,8 @@ LiveFrame::LiveFrame(QWidget *parent, PieceSet *pset, const QString &nick, const
 
 LiveFrame::~LiveFrame()
 {
-    // disconnect to avoid problems
-    connectSignals(1);
+	// disconnect to avoid problems
+	connectSignals(1);
 	delete client;
 }
 
@@ -571,7 +571,7 @@ void LiveFrame::onTimer()
 
 void LiveFrame::resizeEvent( QResizeEvent *evt )
 {
-    super::resizeEvent( evt );
+	super::resizeEvent( evt );
 	Q_ASSERT( splitter );
 	splitter->resize( evt->size().width(), evt->size().height() );
 }

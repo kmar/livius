@@ -44,9 +44,9 @@ class TLCVClient;
 
 class LiveFrame : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    typedef QWidget super;
+	typedef QWidget super;
 
 	struct MenuItem
 	{

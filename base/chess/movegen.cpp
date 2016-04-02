@@ -114,7 +114,7 @@ loop:
 				goto loop;
 			}
 			res = moveBuf[ index++ ];
-        } while ( !board.pseudoIsLegal<1>( res, pin ) );
+		} while ( !board.pseudoIsLegal<1>( res, pin ) );
 		break;
 	case mpCapBufferNoSort:
 	case mpQuietBuffer:
@@ -126,7 +126,7 @@ loop:
 				goto loop;
 			}
 			res = moveBuf[ index++ ];
-        } while ( !board.pseudoIsLegal<0>( res, pin ) );
+		} while ( !board.pseudoIsLegal<0>( res, pin ) );
 		break;
 	default:            //case mpDone:
 		res = mcNone;

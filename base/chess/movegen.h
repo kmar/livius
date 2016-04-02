@@ -41,7 +41,7 @@ namespace cheng4
 
 enum MoveGenMode
 {
-    mmLegal             // perft: legal-only mode
+	mmLegal             // perft: legal-only mode
 };
 
 // movegen phases

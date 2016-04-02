@@ -46,7 +46,7 @@ enum UndoFlags
 	ufIrreversible	=	1,			// restore pawnhash and fifty rule counter
 	ufNPMat			=	2,			// restore non-pawn materials
 	ufKingState		=	4,			// restore king state (=kingpos and check flag)
-    ufCastling		=	8			// restore castling state
+	ufCastling		=	8			// restore castling state
 };
 
 class Board;
