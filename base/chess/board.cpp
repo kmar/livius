@@ -1515,6 +1515,10 @@ Move Board::fromSAN( const char *&ptr ) const
 		if ( !MovePack::isCastling(m) )
 			continue;
 
+		// force KxR in FRC
+		if (frc)
+			--count;
+
 		// generate castling alternatives (king captures rook and rook captures king)
 		Square from = MovePack::from(m);
 		Square to = MovePack::to(m);
