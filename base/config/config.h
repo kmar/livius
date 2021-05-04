@@ -282,6 +282,7 @@ template<> struct Parser<bool> : public ParserBase
 			case 't':
 			case 'T':
 				*var = 1;
+				break;
 			default:
 				*var = 0;
 			}
