@@ -32,7 +32,13 @@ freely, subject to the following restrictions:
 #include <vector>
 #include "sig/signal.h"
 #include "chess/chess.h"
+#include "config/config.h"
 #include "ack.h"
+
+namespace config
+{
+class ConfigVarBase;
+}
 
 class LiveInfo;
 class ChatInfo;
@@ -93,6 +99,9 @@ public:
 	QString getPGN() const;
 	// get client
 	TLCVClient *getClient() const;
+	// add config vars for ChessBoard
+	static bool addConfig( config::ConfigVarBase *parent );
+	void updateConfig();
 
 signals:
 
@@ -101,6 +110,7 @@ private slots:
 
 private:
 	QSplitter *splitter;
+	QSplitter *hsplitter;
 	ChessBoard *board;
 	LiveInfo *info;
 	ChatInfo *chat;

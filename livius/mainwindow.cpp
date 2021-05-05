@@ -43,6 +43,9 @@ freely, subject to the following restrictions:
 #include "debugconsoledialog.h"
 #include "config/config.h"
 
+const int defWidth  = 800;
+const int defHeight = 600;
+
 void MainWindow::initConfig()
 {
 	cfgRoot = new config::CVarGroup("");
@@ -59,8 +62,15 @@ void MainWindow::initConfig()
 	group->addChild( new config::CVarBool("Bold", &fontBold, config::CF_EDIT ) );
 	group->addChild( new config::CVarBool("Italic", &fontItalic, config::CF_EDIT ) );
 	cfgRoot->addChild( group );
+	
+	config::CVarGroup *wgroup = new config::CVarGroup("Main Window");
+	wgroup->addChild( new config::CVarInt("Width", &mainWidth, config::CF_EDIT ) );
+	wgroup->addChild( new config::CVarInt("Height", &mainHeight, config::CF_EDIT ) );
+	wgroup->addChild( new config::CVarBool("Maximized", &maxWindow, config::CF_EDIT ) );
+	cfgRoot->addChild( wgroup );
 
 	// add all configs here
+	LiveFrame::addConfig( cfgRoot );
 	ChessBoard::addConfig( cfgRoot );
 
 	cfgRoot->addChild( new config::CVarQString("Piece set", &pieceSetFile, config::CF_EDIT ) );
@@ -73,6 +83,12 @@ void MainWindow::initConfig()
 		QMessageBox::critical(0, "Error loading config", error );
 
 	cd->updateConfig();
+	
+	if ( mainWidth < defWidth )
+		mainWidth = defWidth;
+	if ( mainHeight < defHeight )
+		mainHeight = defHeight;
+	resize( QSize(mainWidth, mainHeight) );
 
 	if ( fontSize > 0 && !fontFamily.isEmpty() )
 	{
@@ -82,11 +98,20 @@ void MainWindow::initConfig()
 	}
 }
 
-bool MainWindow::saveConfig() const
+bool MainWindow::saveConfig()
 {
 	// save config
 	QString error;
 	QString fnm = appRelative("./livius.cfg");
+	maxWindow = isMaximized();
+	if ( !maxWindow )
+	{
+		mainWidth  = width();
+		mainHeight = height();
+	}
+	LiveFrame *lf = getLiveFrame();
+	if ( lf )
+		lf->updateConfig();
 	bool res = config::ConfigSerialize::saveText( fnm, cfgRoot, &error );
 	if ( !res )
 		QMessageBox::critical(0, "Error saving config", error );
@@ -97,7 +122,8 @@ MainWindow::MainWindow(const QString &appDir, QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow),
 	rd(0), ed(0), cd(0), appDirectory(appDir),
-	cfgRoot(0), fontSize(-1), fontWeight(-1), fontBold(0), fontItalic(0)
+	cfgRoot(0), fontSize(-1), fontWeight(-1), fontBold(0), fontItalic(0),
+	maxWindow(1), mainWidth(defWidth), mainHeight(defHeight)
 {
 	QLocale::setDefault(QLocale::C);
 	ui->setupUi(this);
@@ -122,8 +148,8 @@ MainWindow::MainWindow(const QString &appDir, QWidget *parent) :
 	ui->mainToolBar->hide();
 	statusBar()->hide();
 
-	setMinimumHeight(600);
-	setMinimumWidth(800);
+	setMinimumHeight( defHeight );
+	setMinimumWidth( defWidth );
 
 	frameWindowChanged();
 }
@@ -293,6 +319,11 @@ MainWindow::~MainWindow()
 void MainWindow::setStatusText( const QString &str )
 {
 	status2->setText( str );
+}
+
+bool MainWindow::isMaxWindow() const
+{
+	return maxWindow;
 }
 
 void MainWindow::onMenuChanged( LiveFrame *who, const LiveFrame::MenuMap &menu )

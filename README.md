@@ -8,7 +8,11 @@ build instructions
 
 $ make
 
-Requires Qt 5.
+Requires Qt 5, in particular:
+- qmake
+- qtdeclarative5-dev
+- qtdeclarative5-dev-tools
+- libqt5svg5-dev
 
 contributors
 ------------
@@ -17,3 +21,6 @@ Philipp Classen:
 
 Felix Braun:
     IPv6 fix
+
+Rasmus Althoff:
+    Window layout saved in config

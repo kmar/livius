@@ -35,7 +35,10 @@ int main(int argc, char *argv[])
 	(void)init;
 	QApplication a(argc, argv);
 	MainWindow w( core::getAppPath() );
-	w.showMaximized();
+	if ( w.isMaxWindow() )
+		w.showMaximized();
+	else
+		w.show();
 
 	return a.exec();
 }

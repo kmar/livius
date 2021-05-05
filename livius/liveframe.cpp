@@ -35,6 +35,8 @@ freely, subject to the following restrictions:
 #include <QApplication>
 #include <string.h>
 
+int boardWidth, infoWidth, topHeight, bottomHeight;
+
 using namespace config;
 
 void LiveFrame::connectSignals( bool disconn )
@@ -62,19 +64,23 @@ LiveFrame::LiveFrame(QWidget *parent, PieceSet *pset, const QString &nick, const
 	board->setPieceSet( pset );
 
 	splitter = new QSplitter( Qt::Vertical, this );
-
-	QSplitter *spl1 = new QSplitter( Qt::Horizontal, splitter );
-	spl1->addWidget( board );
-	spl1->addWidget( info );
+	hsplitter = new QSplitter( Qt::Horizontal, splitter );
+	hsplitter->addWidget( board );
+	hsplitter->addWidget( info );
 
 	QList<int> sizes;
-	sizes << 2 << 1;
-
+	if ( !boardWidth || !infoWidth )
+		sizes << 2 << 1;
+	else
+		sizes << boardWidth << infoWidth;
 	QList<int> vsizes;
-	vsizes << 1 << 1;
+	if ( !topHeight || !bottomHeight )
+		vsizes << 1 << 1;
+	else
+		vsizes << topHeight << bottomHeight;
 
-	spl1->setSizes(sizes);
-	splitter->addWidget( spl1 );
+	hsplitter->setSizes( sizes );
+	splitter->addWidget( hsplitter );
 	splitter->addWidget( chat );
 	splitter->setSizes(vsizes);
 	splitter->show();
@@ -772,4 +778,31 @@ void LiveFrame::addCurrent( bool fullReset )
 TLCVClient *LiveFrame::getClient() const
 {
 	return client;
+}
+
+bool LiveFrame::addConfig( config::ConfigVarBase *parent )
+{
+	if ( !parent )
+		return 0;
+	config::CVarGroup *group = new config::CVarGroup("Inner Layout");
+	group->addChild( new config::CVarInt("Board Width", 	&boardWidth, 	config::CF_EDIT) );
+	group->addChild( new config::CVarInt("Info Width",   	&infoWidth,   	config::CF_EDIT) );
+	group->addChild( new config::CVarInt("Top Height",   	&topHeight,   	config::CF_EDIT) );
+	group->addChild( new config::CVarInt("Bottom Height",	&bottomHeight,	config::CF_EDIT) );
+	return parent->addChild( group );
+}
+
+void LiveFrame::updateConfig()
+{
+	if ( !splitter )
+		return;    
+	QList <int> sizes = splitter->sizes();
+	topHeight    = sizes[0];
+	bottomHeight = sizes[1];
+
+	if ( !hsplitter )
+		return;
+	sizes = hsplitter->sizes();
+	boardWidth = sizes[0];
+	infoWidth  = sizes[1];
 }

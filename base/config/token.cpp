@@ -228,6 +228,7 @@ enum TokenType getToken( int &line, const char *&ptr, const char *top, Token &to
 						case '\r':
 							if ( ptr + 2 < top && ptr[2] == '\n' )
 								ptr++;
+							/*falls through*/
 						case '\n':
 							line++;
 							break;
@@ -497,6 +498,7 @@ enum TokenType getToken( int &line, const char *&ptr, const char *top, Token &to
 		case '\r':
 			if ( ptr < top && *ptr == '\n' )	// handle dos-style EOLs
 				ptr++;
+			/*falls through*/
 		case '\n':
 			++line;
 		case '\v':

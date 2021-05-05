@@ -65,7 +65,10 @@ public:
 	QString appRelative( const QString &fnm ) const;
 
 	// save configuration
-	bool saveConfig() const;
+	bool saveConfig();
+	
+	// whether to maximize the window on startup
+	bool isMaxWindow() const;
 
 private slots:
 	void frameWindowChanged();
@@ -161,6 +164,10 @@ private:
 	int fontWeight;
 	bool fontBold;
 	bool fontItalic;
+	
+	// startup window state
+	bool maxWindow;
+	int mainWidth, mainHeight;
 };
 
 #endif // MAINWINDOW_H
