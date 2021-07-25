@@ -63,26 +63,42 @@ LiveFrame::LiveFrame(QWidget *parent, PieceSet *pset, const QString &nick, const
 
 	board->setPieceSet( pset );
 
-	splitter = new QSplitter( Qt::Vertical, this );
-	hsplitter = new QSplitter( Qt::Horizontal, splitter );
-	hsplitter->addWidget( board );
+	splitter = new QSplitter( Qt::Horizontal, this );
+	hsplitter = new QSplitter( Qt::Vertical, splitter );
 	hsplitter->addWidget( info );
-
-	QList<int> sizes;
-	if ( !boardWidth || !infoWidth )
-		sizes << 2 << 1;
-	else
-		sizes << boardWidth << infoWidth;
-	QList<int> vsizes;
-	if ( !topHeight || !bottomHeight )
-		vsizes << 1 << 1;
-	else
-		vsizes << topHeight << bottomHeight;
-
-	hsplitter->setSizes( sizes );
+	hsplitter->addWidget( chat );
+	
+	splitter->addWidget( board );
 	splitter->addWidget( hsplitter );
-	splitter->addWidget( chat );
-	splitter->setSizes(vsizes);
+
+
+
+	if (!boardWidth || !infoWidth )
+	{
+		splitter->setStretchFactor( 0, 20 );
+		splitter->setStretchFactor( 1, 5 );
+	}
+	else
+	{
+		QList<int> sizes;
+		sizes << boardWidth << infoWidth;
+		splitter->setSizes( sizes );
+	}
+
+	if (!topHeight || !bottomHeight )
+	{
+		hsplitter->setStretchFactor( 0, 1 );
+		hsplitter->setStretchFactor( 1, 2 );
+	}
+	else
+	{
+		QList<int> vsizes;
+		vsizes << topHeight << bottomHeight;
+		hsplitter->setSizes( vsizes );
+	}
+
+
+
 	splitter->show();
 	update();
 
@@ -797,12 +813,12 @@ void LiveFrame::updateConfig()
 	if ( !splitter )
 		return;    
 	QList <int> sizes = splitter->sizes();
-	topHeight    = sizes[0];
-	bottomHeight = sizes[1];
+	boardWidth = sizes[0];
+	infoWidth = sizes[1];
 
 	if ( !hsplitter )
 		return;
 	sizes = hsplitter->sizes();
-	boardWidth = sizes[0];
-	infoWidth  = sizes[1];
+	topHeight = sizes[0];
+	bottomHeight  = sizes[1];
 }
