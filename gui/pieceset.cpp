@@ -65,6 +65,26 @@ static const char *pieceFiles[2][6] =
 	}
 };
 
+static const char *pieceFilesFallback[2][6] =
+{
+	{
+		("wP.svg"),
+		("wN.svg"),
+		("wB.svg"),
+		("wR.svg"),
+		("wQ.svg"),
+		("wK.svg")
+	},
+	{
+		("bP.svg"),
+		("bN.svg"),
+		("bB.svg"),
+		("bR.svg"),
+		("bQ.svg"),
+		("bK.svg")
+	}
+};
+
 // load: argument is directory to load from
 bool PieceSet::load( const QString &str )
 {
@@ -78,8 +98,14 @@ bool PieceSet::load( const QString &str )
 			QFile file(fname);
 			if ( !file.open(QFile::ReadOnly) )
 			{
-				success = 0;
-				continue;
+				// try to fall back to lichess naming convention
+				fname = str + QString(pieceFilesFallback[i][j]);
+				QFile fbfile(fname);
+				if ( !fbfile.open(QFile::ReadOnly) )
+				{
+					success = 0;
+					continue;
+				}
 			}
 			pieces[i][j] = new QGraphicsSvgItem(fname);
 			pieces[i][j]->setFlags(QGraphicsItem::ItemClipsToShape);
