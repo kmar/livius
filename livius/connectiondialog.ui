@@ -59,6 +59,13 @@
     <widget class="QLineEdit" name="nickEdit"/>
    </item>
    <item>
+    <widget class="QCheckBox" name="layoutType">
+     <property name="text">
+      <string>Use new layout</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

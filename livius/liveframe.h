@@ -63,7 +63,8 @@ public:
 	typedef std::map< int, MenuItem > MenuMap;
 
 	explicit LiveFrame(QWidget *parent = 0, PieceSet *pset = 0,
-		const QString &nick = "Anonymous", const QString &url = QString(), quint16 port = 0);
+		const QString &nick = "Anonymous", const QString &url = QString(), quint16 port = 0,
+		int ltype = 0);
 	~LiveFrame();
 
 	void resizeEvent( QResizeEvent *evt );
@@ -118,6 +119,7 @@ private:
 	QTimer *timer;
 	// game running?
 	bool running;
+	int layoutType;
 
 	// current crosstable
 	QStringList crossTable;

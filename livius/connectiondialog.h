@@ -38,6 +38,12 @@ namespace config
 class ConfigVarBase;
 }
 
+enum LiveLayoutType
+{
+	LIVE_LAYOUT_OLD,
+	LIVE_LAYOUT_NEW
+};
+
 class ConnectionDialog : public QDialog
 {
 	Q_OBJECT
@@ -50,11 +56,13 @@ public:
 	quint16 getPort() const;
 	QString getNick() const;
 	QString getEmail() const;
+	LiveLayoutType getLayoutType() const;
 
 	void setURL( const QString &url );
 	void setPort( quint16 port );
 	void setNick( const QString &nick );
 	void setEmail( const QString &email );
+	void setLayoutType( LiveLayoutType ltype );
 
 	bool addConfig( config::ConfigVarBase *parent );
 	// config vars have changed
@@ -65,11 +73,14 @@ private slots:
 
 	void on_serverCombo_activated(const QString &str);
 
+	void on_layoutType_stateChanged(int arg1);
+
 private:
 	void addToServerList( const QString &item );
 
 	QString serverURL;
 	quint16 serverPort;
+	int layoutType;
 	QString userNick;
 	QString userEmail;
 	QStringList serverList;

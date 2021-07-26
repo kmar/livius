@@ -342,7 +342,7 @@ LiveFrame *MainWindow::newConnection()
 	{
 		if ( cd->getPort() && !cd->getURL().isEmpty() )
 		{
-			LiveFrame *child = new LiveFrame(this, pset, cd->getNick(), cd->getURL(), cd->getPort() );
+			LiveFrame *child = new LiveFrame(this, pset, cd->getNick(), cd->getURL(), cd->getPort(), cd->getLayoutType() );
 			child->sigSetStatus.connect( this, &MainWindow::setStatusText );
 			child->sigMenuChanged.connect( this, &MainWindow::onMenuChanged );
 			ui->mdiArea->addSubWindow(child);

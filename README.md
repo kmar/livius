@@ -24,3 +24,6 @@ Felix Braun:
 
 Rasmus Althoff:
     Window layout saved in config
+
+Jost Triller:
+    New chat window layout

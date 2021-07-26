@@ -31,6 +31,7 @@ freely, subject to the following restrictions:
 ConnectionDialog::ConnectionDialog(QWidget *parent) :
 	QDialog(parent),
 	serverPort(0),
+	layoutType(LIVE_LAYOUT_OLD),
 	userNick("Anonymous"),
 	ui(new Ui::ConnectionDialog)
 {
@@ -62,6 +63,11 @@ QString ConnectionDialog::getEmail() const
 	return userEmail;
 }
 
+LiveLayoutType ConnectionDialog::getLayoutType() const
+{
+	return (LiveLayoutType)layoutType;
+}
+
 void ConnectionDialog::setURL( const QString &url )
 {
 	serverURL = url;
@@ -87,6 +93,12 @@ void ConnectionDialog::setEmail( const QString &email )
 	userEmail = email;
 }
 
+void ConnectionDialog::setLayoutType(LiveLayoutType ltype)
+{
+	layoutType = (int)ltype;
+	ui->layoutType->setChecked(ltype == LIVE_LAYOUT_NEW);
+}
+
 bool ConnectionDialog::addConfig( config::ConfigVarBase *parent )
 {
 	config::CVarGroup *group = new config::CVarGroup("Connection");
@@ -95,6 +107,7 @@ bool ConnectionDialog::addConfig( config::ConfigVarBase *parent )
 	group->addChild( new config::CVarQString("User alias", &userNick, config::CF_EDIT ) );
 	group->addChild( new config::CVarQString("User e-mail", &userEmail, config::CF_EDIT ) );
 	group->addChild( new config::CVarQStringList("Server list", &serverList, config::CF_EDIT ) );
+	group->addChild( new config::ConfigVar<int>("Layout type", &layoutType, config::CF_EDIT ) );
 	return parent->addChild( group );
 }
 
@@ -104,6 +117,7 @@ void ConnectionDialog::updateConfig()
 	setURL( serverURL );
 	setPort( serverPort );
 	setNick( userNick );
+	setLayoutType((LiveLayoutType)layoutType);
 	ui->serverCombo->clear();
 	ui->serverCombo->addItems( serverList );
 }
@@ -154,4 +168,9 @@ void ConnectionDialog::on_serverCombo_activated(const QString &str)
 	}
 	setURL( url );
 	setPort( port );
+}
+
+void ConnectionDialog::on_layoutType_stateChanged(int arg1)
+{
+	setLayoutType(arg1 ? LIVE_LAYOUT_NEW : LIVE_LAYOUT_OLD);
 }
