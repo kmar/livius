@@ -15,14 +15,14 @@ Requires Qt 5, in particular:
 - libqt5svg5-dev
 
 OSX:
-install homebrew: https://treehouse.github.io/installation-guides/mac/homebrew
-in terminal:
-brew install qt5
-brew link qt (or brew link qmake, don't remember)
-
-make
+- install homebrew: https://treehouse.github.io/installation-guides/mac/homebrew
+- (in the terminal):
+- brew install qt5
+- brew link qt (or brew link qmake, don't remember)
+- make
 
 note that the first time you run livius.app, the pieces will be missing
+
 go to Appearance/Piece set and navigate to data/pieces2d/mine (may fix this later)
 
 contributors
