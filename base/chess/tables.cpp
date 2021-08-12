@@ -420,7 +420,7 @@ void BitOp::init()
 		__cpuid(id, 1);
 		hwPopCnt = (id[2] & 0x800000) != 0;
 	}
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) && !defined(__ARM_ARCH)
 	int id[4] = {0};
 	asm(
 		"cpuid":

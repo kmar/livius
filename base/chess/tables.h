@@ -27,7 +27,9 @@ freely, subject to the following restrictions:
 
 #include "chtypes.h"
 
-#define USE_POPCNT
+#if !defined(__ARM_ARCH)
+#	define USE_POPCNT
+#endif
 
 #if defined(_MSC_VER)
 #include <intrin.h>
@@ -188,7 +190,7 @@ struct BitOp
 		"cc", "eax"
 		);
 		return res;
-	#elif defined(__GNUC__) && defined(IS_X64)
+	#elif defined(__GNUC__) && defined(IS_X64) && !defined(__ARM_ARCH)
 		u64 res;
 		asm(
 			"bsfq %1, %0" :
@@ -249,7 +251,7 @@ done:
 		"cc", "eax"
 			);
 		return (uint)res;
-	#elif defined(__GNUC__) && defined(IS_X64)
+	#elif defined(__GNUC__) && defined(IS_X64) && !defined(__ARM_ARCH)
 		u64 res;
 		asm(
 			"bsrq %1, %0" :
