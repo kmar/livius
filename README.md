@@ -23,7 +23,7 @@ OSX:
 
 note that the first time you run livius.app, the pieces will be missing
 
-go to Appearance/Piece set and navigate to data/pieces2d/mine (may fix this later)
+go to Appearance/Piece set and navigate to data/pieces2d/mine (may fix this later), then File/Save config
 
 contributors
 ------------
